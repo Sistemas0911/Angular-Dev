@@ -1,5 +1,6 @@
 
 import { Injectable } from '@angular/core';
+import { HeroeComponent } from '../heroe/heroe.component';
 
 @Injectable()
 export class HeroesService {
@@ -61,7 +62,15 @@ export class HeroesService {
   }
 
   getHeroes() {
-    return this.heroes;
+    // tslint:disable-next-line:prefer-const
+    let heroesArr: Heroe[] = [];
+    for (let index = 0; index < this.heroes.length; index++) {
+      // tslint:disable-next-line:prefer-const
+      let heroe = this.heroes[index];
+      heroe.idx = index;
+      heroesArr.push(heroe);
+    }
+    return heroesArr;
   }
 
   getHeroe(idx: number) {
@@ -69,16 +78,22 @@ export class HeroesService {
   }
 
   buscarHeroe( termino: string ) {
+    // tslint:disable-next-line:prefer-const
     let heroesArr: Heroe[] = [];
     termino = termino.toLowerCase();
-    for  ( const heroe of this.heroes) {
+    // tslint:disable-next-line:prefer-const
+    for  ( let i = 0; i < this.heroes.length; i++) {
+      // tslint:disable-next-line:prefer-const
+      let heroe = this.heroes[i];
+      // tslint:disable-next-line:prefer-const
       let nombre = heroe.nombre.toLowerCase();
+
       if ( nombre.indexOf(termino) >= 0 ) {
+        heroe.idx = i;
         heroesArr.push( heroe );
       }
-
     }
-
+    console.log(heroesArr);
     return heroesArr;
   }
 }
@@ -89,4 +104,5 @@ export interface Heroe {
   img: string;
   aparicion: string;
   casa: string;
+  idx?: number;
 }
